@@ -3,9 +3,9 @@ title: "Investigating Toronto COVID-19 Cases in 2020: Age group, Source of Infec
 author: 
   - Yunkai Gu
 thanks: "Code and data are available at: https://github.com/Kylie309/Toronto-2020-Covid-Cases."
-date: 23 September 2024
+date: 24 September 2024
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "Process up to now: done drafts for data overview; generated graphs needed; done drafts for appendix; done references"
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -18,14 +18,14 @@ bibliography: references.bib
 
 library(tidyverse)
 library(opendatatoronto)
-library(palmerpenguins)
 ```
 
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
+Still working. 
 
+Use cross-reference sections and sub-sections. We use @citeR and @rohan.
 The remainder of this paper is structured as follows. @sec-data....
 
 
@@ -33,6 +33,19 @@ The remainder of this paper is structured as follows. @sec-data....
 
 
 # Data {#sec-data}
+
+## Overview
+
+The analysis uses the dataset of "COVID-19 Cases in Toronto" from the Open Data Toronto portal. The raw dataset contains "anonymized, person-level information for all COVID-19 cases reported from the start of the COVID-19 pandemic in January 2020", which is shared by Toronto Public Health (TPH) and lastly refreshed in February 14, 2024 [@toronto_covid].
+
+The earliest onset of symptoms of COVID-19 was confirmed to be around 1 December 2019 (by The Lancet) to 8 December 2019 (by WHO), and human-to-human transmission was confirmed by the WHO and Chinese authorities by 20 January 2020 [@wikipedia_covid19]. Therefore, year 2020 was considered as the first year of COVID-19. 
+
+Based on the background of COVID-19, the paper found it meaningful to investigate the COVID-19 cases in Toronto during the first year of the pandemic, which is year 2020. The raw data is then downloaded and cleaned before conducting analysis with tables, graphs and plots.
+
+The analyses presented in this paper were conducted using R programming language [@citeR]. The `tidyverse` [@citetidyverse] packages were used in the process of data simulation, testing beforehand. Original raw data was downloaded from the Open Data Toronto using the `opendatatoronto` [@opendatatoronto_package] packages and the `tidyverse` [@citetidyverse] packages. Then, data cleaning process was done by using the `tidyverse` package [@citetidyverse] and the `dplyr` package [@citedplyr]. Graphs and plots were made by using the `ggplot2` packages [@citeggplot].
+
+
+\newpage
 
 
 ```{r}
@@ -57,6 +70,7 @@ analysis_data |>
 
 ```
 
+
 Talk way more about it. 
 
 
@@ -70,6 +84,7 @@ Talk way more about it.
 analysis_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv"))
 
 analysis_data |> 
+  filter(source_of_infection != "No Information") |>
   ggplot(aes(x = source_of_infection)) +
   geom_bar(stat = "count") +
   theme_minimal() +
@@ -139,6 +154,7 @@ analysis_data |>
 analysis_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv"))
 
 analysis_data |> 
+  filter(source_of_infection != "No Information") |>
   ggplot(aes(x = source_of_infection, group = age_group, fill = age_group)) +
   geom_bar(stat = "count", position = "dodge2") +
   theme_minimal() +
@@ -167,6 +183,7 @@ analysis_data |>
 analysis_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv"))
 
 analysis_data |> 
+  filter(source_of_infection != "No Information") |>
   ggplot(aes(x = source_of_infection, fill = source_of_infection)) +
   geom_bar(stat = "count") +
   theme_minimal() +
@@ -191,9 +208,31 @@ analysis_data |>
 
 \clearpage
 
+
+
 \appendix
+\renewcommand{\thesection}{A.\arabic{section}}
+
 
 # Appendix {-}
+
+
+# Dataset and Graph Sketches
+
+Target cleaned dataset and processed graphs are available in the Github Repository. See "other/sketches".
+
+
+# Data Cleaning
+
+The data cleaning process involves the following steps to ensure the integrity and usability of the dataset:
+
+1. Modification of Column Names: The column names are standardized by `janitor::clean_names()` function. The column names are converted into lower cases, and the spaces between words are replaced with underscores, thereby enhancing readability and consistency across the dataset.
+
+2. Separation of Date Columns: The "reported_date" column, originally formatted as "YYYY/MM/DD," is separated into three new columns: "reported_year", "reported_month" and "reported day". The same cleaning process is done to the "episode_date" column. This step improved readability and simplicity for data processing by allowing for more straightforward presentation of temporal variables.
+
+3. Removal of Probable Cases: Any rows where the "classification" column is marked as "probable" are excluded from the cleaned dataset. This step removes any cases that are categorized as probable COVID-19 cases according to standard criteria, thereby enhancing the precision and reliability of analysis by focusing on confirmed cases.
+
+4. Exclusion of Incomplete Age Data: Any rows containing the column "age_group“ equals "NA" is removed. This step ensures that the data analysis is not compromised by incomplete information.
 
 
 # Additional data details
@@ -201,6 +240,7 @@ analysis_data |>
 
 
 \newpage
+
 
 
 # References
