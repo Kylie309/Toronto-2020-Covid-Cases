@@ -19,12 +19,12 @@ all_raw_data <- read_csv("data/raw_data/covid_raw_data.csv")
 
 
 # Simplify column names by standardizing them
-# Extract the year, month, and day from date columns
-# Filters rows where either the reported_year or the episode_year is equal to 2020
+# Extract the year, month, and day from reported_date columns
+# Filters rows where reported_year equals 2020
 # Remove rows where classification equals "probable"
-# Remove rows with NA in the 'age_group' column
-# Remove columns unnecessary for data analysis
-
+# Remove rows without information in all three columns:
+#   age_group, source_of_infection and client_gender 
+# Select only the columns that are necessary for data analysis
 
 all_cleaned_data <-
   all_raw_data |>
@@ -32,16 +32,16 @@ all_cleaned_data <-
   mutate(
     reported_year = year(reported_date),
     reported_month = month(reported_date),
-    reported_day = day(reported_date),
-    episode_year = year(episode_date),
-    episode_month = month(episode_date),
-    episode_day = day(episode_date)
+    reported_day = day(reported_date)
   ) |> 
-  filter(reported_year == 2020 | episode_year == 2020) |>
+  filter(reported_year == 2020) |>
   filter(classification != "probable") |> 
-  filter(!is.na(age_group)) |> 
-  select(-id, -assigned_id, -neighbourhood_name, -fsa, -classification,
-         -episode_date, -reported_date, -ever_intubated)
+  filter(!is.na(outbreak_associated)) |>
+  filter(!is.na(age_group) |
+           source_of_infection != "No Information" |
+           client_gender != "UNKNOWN") |>
+  select(outbreak_associated, age_group, source_of_infection, client_gender, 
+         outcome, reported_year, reported_month, reported_day)
 
 
 #### Save data ####
