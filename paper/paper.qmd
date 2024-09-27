@@ -37,7 +37,7 @@ This paper aims to fill this gap. To do this, the paper leverages the dataset of
 
 Next, the study compares case counts of different age groups within the same source of infection. The main findings include that younger teenagers (those aged 19 and younger) represented a significantly high proportion of cases that were infected due to household contact, and that individuals aged 20 to 29 years were the leading group within the cases with infection sources of “Community”, “Close Contact” and “Travel”. A similar comparison of counts of different infection sources within the same age group is then conducted. It reveals that there was a decreasing trend between number of cases with the source of infection "Household Contact" and the age, while case counts linked to healthcare institution outbreaks increased with age.
 
-The paper structured as follows: Firstly, @sec-data-overview provides a description of the dataset. This includes introduction of data source and data cleaning process (@sec-data-source), and explanations of variables and measurement (@sec-variable). Then, @sec-visual displays all visualizations of the data, including distribution by age groups (@sec-age), distribution by gender (@sec-gender), and distribution by sources of infection (@sec-source-infection). Then, @sec-result presents the results of data analysis. @sec-outbreak discusses how counts of COVID-19 cases were associated with outbreaks; @sec-age-same-source compares the counts of COVID-19 cases of different age groups within the same source of infection; and @sec-source-same-age compares the counts of cases of different sources of infection within the same age group. Finally, @sec-appx includes supplementary information on data cleaning process (@sec-appx-cleaning) and summarized statistics of each variable (@sec-appx-stats). References of the paper are listed at the end.
+The paper structured as follows: Firstly, @sec-data-overview provides a description of the dataset. This includes introduction of data source and data cleaning process (@sec-data-source), and explanations of variables and measurement (@sec-variable). Then, @sec-analysis displays all visualizations of the data, including distribution by age groups (@sec-age), distribution by gender (@sec-gender), and distribution by sources of infection (@sec-source-infection). Then, @sec-result presents the results of data analysis. @sec-outbreak discusses how counts of COVID-19 cases were associated with outbreaks; @sec-age-same-source compares the counts of COVID-19 cases of different age groups within the same source of infection; and @sec-source-same-age compares the counts of cases of different sources of infection within the same age group. Finally, @sec-appx includes supplementary information on data cleaning process (@sec-appx-cleaning) and summarized statistics of each variable (@sec-appx-stats). References of the paper are listed at the end.
 
 
 \newpage
@@ -177,7 +177,7 @@ It could be seen that the assessment by public health investigators plays a sign
 \newpage
 
 
-## Visualization {#sec-visual}
+## Analysis {#sec-analysis}
 
 ### Distribution by Age Groups {#sec-age}
 
