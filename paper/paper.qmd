@@ -27,17 +27,17 @@ library(tibble)
 
 # Introduction {#sec-introduction}
 
-Since a novel coronavirus was identified after Wuhan Municipal Health Commission in China reported a cluster of cases of pneumonia in December 2019, the coronavirus disease 2019 (COVID-19) pandemic has rapidly disseminated across the globe, resulting in profound consequences in communities, societies and public health systems worldwide. World Health Organization published the first Disease Outbreak News on 5 January 2020, and made the assessment that COVID-19 could be characterized as a pandemic on 11 March 2020, indicating the the alarming levels of spread and severity of the incident [@who_covid_timeline].
+Since a novel coronavirus was identified after Wuhan Municipal Health Commission in China reported a cluster of pneumonia cases in December 2019, the coronavirus disease 2019 (COVID-19) pandemic has rapidly spread worldwide, resulting in profound consequences in communities, societies and public health systems worldwide. World Health Organization issued the first Disease Outbreak News on 5 January 2020, and declared COVID-19 a pandemic on 11 March 2020, indicating the the alarming levels of spread and severity of the incident [@who_covid_timeline].
 
-In January 2020, the first "presumptive" case of the new coronavirus in Canada was reported in Toronto, which marked the beginning of its spread within the country. As the most most populous city in Canada, Toronto’s COVID-19 case data became a critical point of reference, providing insights not only for the province of Ontario but for the country as a whole. Though the pandemic has stepped into the recovery stage, the analysis of the history COVID-19 case data of Toronto, could support prevention for potential incidents in the future, and contribute to new health policy implementation and community re-establishment during aftermath of the pandemic.
+In January 2020, the first "presumptive" case of the new coronavirus in Canada was reported in Toronto, which marked the beginning of its spread within the country. As the most most populous city in Canada, Toronto’s COVID-19 case data became a critical point of reference, providing insights not only for the province of Ontario but for the country as a whole. Although the pandemic has moved into the recovery stage, analysis of historical COVID-19 case data of Toronto, could support prevention for potential incidents in the future, and contribute to new health policy development and community re-establishment during aftermath of the pandemic.
 
-To better support such improvement in health system of Toronto, specific analysis on demographic trends of the cases is crucial. However, a gap still remains in how key factors - age, gender, and sources of infection - contributed to the spread of COVID-19 in Toronto throughout 2020.
+To support improvements in health system of Toronto, specific analysis on demographic trends in case data is crucial. However, a gap remains in understanding how key factors - age, gender, and sources of infection - contributed to the spread of COVID-19 in Toronto during 2020.
 
-This paper aimed at filling this gap. To do this, the paper leverages the dataset of COVID-19 cases in Toronto in 2020 from Open Data Toronto. After cleaning the raw dataset, the analysis of the case data starts from the examination of distribution of cases by age group, gender and source of infection. The findings show that there was higher case counts for younger adults (particularly those aged 20 to 29), there was no significant differences in counts between female and male cases, and the three main sources of infection were household contact, community and outbreaks in healthcare institutions. Counts of cases related to outbreaks are investigated in detail, revealing that within all the cases related to outbreaks, the outbreaks happened in healthcare institutions were the most common source of infection.
+This paper aims to fill this gap. To do this, the paper leverages the dataset of COVID-19 cases in Toronto in 2020 from Open Data Toronto. After cleaning the raw dataset, the analysis of the case data starts from the examination of distribution of cases by age group, gender and source of infection. The findings show that there was higher case counts of younger adults (particularly those aged 20 to 29), no significant differences in counts between female and male cases, and the three main sources of infection were household contact, community and outbreaks in healthcare institutions. A detailed examination of outbreak-related cases shows that healthcare institutions were the most common source of outbreak-related infections.
 
-Then the comparison of counts of cases of different age groups within the same source of infection is conducted. The main findings include that younger teenagers (those aged 19 and younger) took up significantly high proportion of cases that were infected due to household contact, and that the age group of 20 to 29 years acted as the leading group within the cases with sources of infection “Community”, “Close Contact” and “Travel”. A similar comparison of counts of cases of different sources of infection within the same age group is also conducted. It reveals that there was a decreasing trend between number of cases with the source of infection "Household Contact", and the age, whereas the trend between number of cases related to “Outbreaks, Healthcare Institutions” and the age revealed an increasing trend.
+Next, the study compares case counts of different age groups within the same source of infection. The main findings include that younger teenagers (those aged 19 and younger) represented a significantly high proportion of cases that were infected due to household contact, and that individuals aged 20 to 29 years were the leading group within the cases with infection sources of “Community”, “Close Contact” and “Travel”. A similar comparison of counts of different infection sources within the same age group is then conducted. It reveals that there was a decreasing trend between number of cases with the source of infection "Household Contact" and the age, while case counts linked to healthcare institution outbreaks increased with age.
 
-The paper structured as follows: Firstly, @sec-data-overview provides description of the dataset. This includes introduction of data source and data cleaning process (@sec-data-source), and explanations of variables and measurement (@sec-variable). Then, @sec-visual displays all visualizations of the data, including distribution by age groups (@sec-age), distribution by gender (@sec-gender), and distribution by sources of infection (@sec-source-infection). Then, @sec-result presents the results of data analysis. @sec-outbreak discusses how counts of COVID-19 cases were associated with outbreaks; @sec-age-same-source compares the counts of COVID-19 cases of different age groups within the same source of infection; and @sec-source-same-age compares the counts of cases of different sources of infection within the same age group. Finally, @sec-appx includes supplementary information on data cleaning process (@sec-appx-cleaning) and summarized statistics of each variable (@sec-appx-stats). References of the paper are listed at the end.
+The paper structured as follows: Firstly, @sec-data-overview provides a description of the dataset. This includes introduction of data source and data cleaning process (@sec-data-source), and explanations of variables and measurement (@sec-variable). Then, @sec-visual displays all visualizations of the data, including distribution by age groups (@sec-age), distribution by gender (@sec-gender), and distribution by sources of infection (@sec-source-infection). Then, @sec-result presents the results of data analysis. @sec-outbreak discusses how counts of COVID-19 cases were associated with outbreaks; @sec-age-same-source compares the counts of COVID-19 cases of different age groups within the same source of infection; and @sec-source-same-age compares the counts of cases of different sources of infection within the same age group. Finally, @sec-appx includes supplementary information on data cleaning process (@sec-appx-cleaning) and summarized statistics of each variable (@sec-appx-stats). References of the paper are listed at the end.
 
 
 \newpage
@@ -206,7 +206,7 @@ analysis_data |>
 ```
 
 
-@fig-age illustrates the distribution of COVID-19 cases in Toronto during 2020 by age groups. Among all cases, the age group with the highest number of COVID-19 cases is 20 to 29 years, with specifically 12378 counts (approximately 19.8% of all cases), followed by the age group of 30 to 39 years (16.4%) and the age group of 50 to 59 years (14.7%). Notice that there is a decreasing trend in case numbers as age increases beyond 50 years, and the age group of 90 and older has lowest proportion of cases.
+@fig-age illustrates the distribution of COVID-19 cases in Toronto during 2020 by age groups. The age group with the highest number of COVID-19 cases is 20 to 29 years, with specifically 12378 counts (approximately 19.8% of all cases), followed by the age group of 30 to 39 years (16.4%) and the age group of 50 to 59 years (14.7%). There is a noticeable decreasing trend in case numbers as age increases beyond 50 years, with the age group of 90 and older having the lowest proportion of cases.
 
 
 ### Distribution by Gender {#sec-gender}
@@ -234,7 +234,7 @@ analysis_data |>
 ```
 
 
-@fig-gender illustrates the distribution of COVID-19 cases in Toronto during 2020 by gender. Female and male have relatively same proportion. Specifically, there are 30462 male cases and 31799 female cases. The sum of the number of non-binary, transgender and other cases is 23, which is a tiny proportion of the total number of COVID-19 cases.
+@fig-gender illustrates the distribution of COVID-19 cases in Toronto during 2020 by gender. The proportion of female and male cases are relatively similar (with specifically 30462 male cases and 31799 female cases). There is a total of 23 non-binary, transgender and other cases, representing a tiny proportion of the total number of COVID-19 cases.
 
 
 ### Distribution by Sources of Infection {#sec-source-infection}
@@ -264,7 +264,7 @@ analysis_data |>
 ```
 
 
-@fig-source-infection illustrates the distribution of COVID-19 cases in Toronto during 2020 by source of infection. Among all sources of infection, household contact is the most common source, with specifically 11779 cases (29.0%). The second common source is community (9895 cases, 24.4%) and the third common source is outbreak in healthcare institutions (8724 cases, 21.5%). These three leading sources of infection have significantly higher proportion than others, and almost three-fourths of all cases were driven by them. On the other hand, the travel-related cases, with fewer than 1,000 cases, are notably less significant.
+@fig-source-infection illustrates the distribution of COVID-19 cases in Toronto during 2020 by source of infection. "Household Contact" is the most common source, with specifically 11779 cases (29.0%). The second common source is "Community" (9895 cases, 24.4%), followed by "Outbreak in healthcare institutions" (8724 cases, 21.5%). These three leading sources of infection have significantly higher proportion than others, and almost three-fourths of all cases were driven by them. On the other hand, the travel-related cases, with fewer than 1,000 cases, are notably less significant.
 
 
 # Result {#sec-result}
@@ -312,7 +312,7 @@ outbreak_summary |>
 ```
 
 
-@fig-outbreak-asso compares the number of cases that were associated with outbreaks (i.e. had either "Outbreaks, Congregate Settings", "Outbreaks, Healthcare Institutions" or "Outbreaks, Other Settings" as their sources of infection) to the number of cases that were not. It reveals that there was a smaller proportion of cases that were associated with outbreaks (with 13205 cases, 32.5%), approximately half of the number of the ones that were not.
+@fig-outbreak-asso compares the number of cases that were associated with outbreaks (i.e. "Outbreaks, Congregate Settings", "Outbreaks, Healthcare Institutions" or "Outbreaks, Other Settings") to the number of cases that were not. The figure shows a smaller proportion of cases that were associated with outbreaks (with 13205 cases, 32.5%), approximately half of the number of non-outbreak-related cases.
 
 
 ```{r}
@@ -340,7 +340,7 @@ analysis_data |>
 ```
 
 
-Recall the distribution of cases by sources of infection shown in @sec-source-infection above. By selecting out the three distinct sources of infection that are associated with outbreaks, @fig-outbreak-detail demonstrates the distribution of COVID-19 cases by outbreak types. Among all outbreak-related cases (specifically 13205 cases), the outbreaks that happened in healthcare institutions, such as long-term care homes, retirement homes, and hospitals, were the most common sources of infection (8724 cases, 66.1%), exceeding half of the total. Outbreaks that happened in congregate settings such as shelters, correctional facilities, and group homes were the least common ones (1089 cases, 8.24%).
+Recall the distribution of cases by sources of infection shown in @sec-source-infection above. By selecting out the three distinct sources of infection that are associated with outbreaks, @fig-outbreak-detail highlights the distribution of COVID-19 cases by outbreak types. Among all outbreak-related cases (13205 in total), the outbreaks that happened in healthcare institutions, such as long-term care homes, retirement homes, and hospitals, were the most common sources of infection (8724 cases, 66.1%), accounting for more than half of all cases. Outbreaks that happened in congregate settings, such as shelters, correctional facilities, and group homes, were the least common ones (1089 cases, 8.24%).
 
 
 ## Different Age Groups Within the Same Source {#sec-age-same-source}
@@ -348,7 +348,7 @@ Recall the distribution of cases by sources of infection shown in @sec-source-in
 
 ```{r}
 #| label: fig-age-same-source-1
-#| fig-cap: Comparison of Different Age Groups Within the Same Source of Infection
+#| fig-cap: Comparison of Case Counts Across Different Age Groups Within the Same Source of Infection
 #| echo: false
 #| warning: false
 #| message: false
@@ -377,14 +377,14 @@ analysis_data |>
 ```
 
 
-@fig-age-same-source-1 compares the counts of cases of different age groups within the same source of infection. One of the key observations is that within all cases that had "Household Contact" as their source of infection, people aged 19 and younger had significantly high proportion (3587 cases, 30.5%). The age group of 19 and younger was also most likely to get infected by COVID-19 due to outbreaks in other settings, such as outbreaks in workplaces, schools, and day cares in Toronto. Moreover, the age group of 20 to 29 years acted as the leading group within the sources of infection of "Community", "Close Contact" and "Travel". The source of infection "Outbreaks, Health Institutions" had age groups of 80 to 89 years to be the primary group, followed by the age group of 90 and older.
+@fig-age-same-source-1 compares the counts of cases across different age groups within the same source of infection. One of the key observations is that among all cases with "Household Contact" as their source of infection, individuals aged 19 and younger represented significantly high proportion (3587 cases, 30.5%). The age group of 19 and younger was also the most likely to get infected by COVID-19 due to "outbreaks in other settings", such as outbreaks in workplaces, schools, and day cares in Toronto. Additionally, the age group of 20 to 29 years acted as the leading group for the sources of infection of "Community", "Close Contact" and "Travel". The source of infection "Outbreaks, Health Institutions" had age group of 80 to 89 years to be the primary group, followed by that of 90 and older.
 
 @fig-age-same-source-2 shows a clearer comparison by plotting separate bar plot for each source of infection vertically.
 
 
 ```{r fig.height=20, fig.width=15}
 #| label: fig-age-same-source-2
-#| fig-cap: Comparison of Different Age Groups Within the Same Source of Infection
+#| fig-cap: Comparison of Case Counts Accorss Different Age Groups Within the Same Source of Infection
 #| echo: false
 #| warning: false
 #| message: false
@@ -425,7 +425,7 @@ analysis_data |>
 
 ```{r}
 #| label: fig-source-same-age-1
-#| fig-cap: Comparison of Different Sources of Infection Within the Same Age Group
+#| fig-cap: Comparison of Case Counts Across Different Sources of Infection Within the Same Age Group
 #| echo: false
 #| warning: false
 #| message: false
@@ -454,16 +454,16 @@ analysis_data |>
 ```
 
 
-@fig-source-same-age-1 compares the counts of cases of different sources of infections within the same source of infection. One of the key observations include that the source "Household Contact" dominates across a majority of age groups, mainly the younger ones. For age group of 19 and younger, the proportion of cases related to the source is significantly high (3587 cases, 47.1%). There is a downward trend between such proportion and the age, as the decreasing length in the green bar in @fig-source-same-age-1 indicates that as the age becomes higher, the proportion of "Household Contact" as the source of infection becomes lower. Similar decreasing trend is discovered between the proportion of "Close Contact" cases and the age, and between the proportion of "Community" cases and the age, especially for people between 20 to 80.
+@fig-source-same-age-1 compares the counts of cases from different sources of infections within the same source of infection. One of the key observations is that the source "Household Contact" dominates across a majority of age groups, particularly the younger ones. For age group of 19 and younger, the case counts and the proportion of cases related to the source is significantly high (3587 cases, 47.1%). There is a downward trend between the number of cases from "Household Contact" and the age, as the decreasing length of the green bar in @fig-source-same-age-1 shows: as age increases, the number of cases with "Household Contact" as a source of infection decreases. A similar decreasing trend is discovered between number of "Close Contact" cases and the age, and between the number of "Community" cases and the age, especially among people aged 20 to 80.
 
-On the other hand, the trend between proportion of cases related to "Outbreaks, Healthcare Institutions" and the age reveals an upward trend in the graph. Starting from the age group of 19 and younger, the length of orange bar increases as the age is higher. For people over 80, the source dominates (with 2181 cases, 68.6% for 80-89 age group and 1828 cases, 86.6% for 90 and older age group).
+On the other hand, the trend for cases counts related to "Outbreaks, Healthcare Institutions" and the age reveals to be upward in the graph. Starting from the age group of 19 and younger, the length of orange bar increases with the age. For people over 80, the source dominates (with 2181 cases, 68.6% for 80-89 age group and 1828 cases, 86.6% for 90 and older age group).
 
 @fig-source-same-age-2 shows a clearer comparison by plotting separate bar plot for each source of infection vertically.
 
 
 ```{r fig.height=20, fig.width=15}
 #| label: fig-source-same-age-2
-#| fig-cap: Comparison of Different Sources of Infection Within the Same Age Group
+#| fig-cap: Comparison of Case Counts Across Different Sources of Infection Within the Same Age Group
 #| echo: false
 #| warning: false
 #| message: false
