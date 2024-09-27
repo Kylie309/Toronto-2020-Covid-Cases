@@ -23,16 +23,20 @@ number_of_cases <- 63000
 simulated_data <-
   tibble(
     age_group = sample(
-      x = c("19 and younger", "20 to 29 Years", "30 to 39 Years", 
-            "40 to 49 Years", "50 to 59 Years", "60 to 69 Years", 
-            "70 to 79 Years", "80 to 89 Years", "90 and older"),
+      x = c(
+        "19 and younger", "20 to 29 Years", "30 to 39 Years",
+        "40 to 49 Years", "50 to 59 Years", "60 to 69 Years",
+        "70 to 79 Years", "80 to 89 Years", "90 and older"
+      ),
       size = number_of_cases,
       replace = TRUE
     ),
     source_of_infection = sample(
-      x = c("Close Contact", "Community", "Household Contact", "Travel",
-            "Outbreaks, Congregate Settings", "Outbreaks, Healthcare Institutions",
-            "Outbreaks, Other Settings"),
+      x = c(
+        "Close Contact", "Community", "Household Contact", "Travel",
+        "Outbreaks, Congregate Settings", "Outbreaks, Healthcare Institutions",
+        "Outbreaks, Other Settings"
+      ),
       size = number_of_cases,
       replace = TRUE
     ),
@@ -42,7 +46,7 @@ simulated_data <-
       replace = TRUE
     )
   )
-  
+
 
 #### Write_csv
 write_csv(simulated_data, file = "data/raw_data/simulated_covid_data.csv")
