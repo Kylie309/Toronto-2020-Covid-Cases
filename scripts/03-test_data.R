@@ -34,5 +34,5 @@ cleaned_data <- read_csv("data/analysis_data/covid_analysis_data.csv")
 
 # If the output is FALSE for the test, the test is passed
 any(is.na(cleaned_data$age_group) &
-      cleaned_data$source_of_infection == "No Information" &
-      cleaned_data$client_gender == "UNKNOWN")
+  cleaned_data$source_of_infection == "No Information" &
+  cleaned_data$client_gender == "UNKNOWN")
