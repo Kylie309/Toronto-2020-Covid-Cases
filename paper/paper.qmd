@@ -1,32 +1,43 @@
 ---
-title: "Investigating Toronto COVID-19 Cases in 2020: Age group, Source of Infection, and Whether Outbreak Associated"
+title: "Analysis of COVID-19 Cases in Toronto During 2020: Trends by Age, Gender, and Sources of Infection"
 author: 
   - Yunkai Gu
 thanks: "Code and data are available at: https://github.com/Kylie309/Toronto-2020-Covid-Cases."
-date: 24 September 2024
+date: 27 September 2024
 date-format: long
-abstract: "Process up to now: done drafts for data overview; generated graphs needed; done drafts for appendix; done references"
+abstract: "This paper analyzes COVID-19 case data from Toronto in 2020, specifically investigating the trends by age group, gender, and sources of infection. The study finds that younger adults (aged 20 to 29) had the highest case counts, and that there were no significant differences in counts between males and females. The three primary sources of infection of COVID-19 was household contact, community spread, and healthcare institution outbreaks. These results support public health planning, and provide guidelines for future policy decisions and community re-establishment during aftermath of the pandemic."
 format: pdf
+toc: true
 number-sections: true
 bibliography: references.bib
 ---
+
 
 ```{r}
 #| include: false
 #| warning: false
 #| message: false
 
-library(tidyverse)
 library(opendatatoronto)
+library(tidyverse)
+library(knitr)
+library(tibble)
 ```
 
 
-# Introduction
+# Introduction {#sec-introduction}
 
-Still working. 
+Since a novel coronavirus was identified after Wuhan Municipal Health Commission in China reported a cluster of cases of pneumonia in December 2019, the coronavirus disease 2019 (COVID-19) pandemic has rapidly disseminated across the globe, resulting in profound consequences in communities, societies and public health systems worldwide. World Health Organization published the first Disease Outbreak News on 5 January 2020, and made the assessment that COVID-19 could be characterized as a pandemic on 11 March 2020, indicating the the alarming levels of spread and severity of the incident [@who_covid_timeline].
 
-Use cross-reference sections and sub-sections. We use @citeR and @rohan.
-The remainder of this paper is structured as follows. @sec-data....
+In January 2020, the first "presumptive" case of the new coronavirus in Canada was reported in Toronto, which marked the beginning of its spread within the country. As the most most populous city in Canada, Toronto’s COVID-19 case data became a critical point of reference, providing insights not only for the province of Ontario but for the country as a whole. Though the pandemic has stepped into the recovery stage, the analysis of the history COVID-19 case data of Toronto, could support prevention for potential incidents in the future, and contribute to new health policy implementation and community re-establishment during aftermath of the pandemic.
+
+To better support such improvement in health system of Toronto, specific analysis on demographic trends of the cases is crucial. However, a gap still remains in how key factors - age, gender, and sources of infection - contributed to the spread of COVID-19 in Toronto throughout 2020.
+
+This paper aimed at filling this gap. To do this, the paper leverages the dataset of COVID-19 cases in Toronto in 2020 from Open Data Toronto. After cleaning the raw dataset, the analysis of the case data starts from the examination of distribution of cases by age group, gender and source of infection. The findings show that there was higher case counts for younger adults (particularly those aged 20 to 29), there was no significant differences in counts between female and male cases, and the three main sources of infection were household contact, community and outbreaks in healthcare institutions. Counts of cases related to outbreaks are investigated in detail, revealing that within all the cases related to outbreaks, the outbreaks happened in healthcare institutions were the most common source of infection.
+
+Then the comparison of counts of cases of different age groups within the same source of infection is conducted. The main findings include that younger teenagers (those aged 19 and younger) took up significantly high proportion of cases that were infected due to household contact, and that the age group of 20 to 29 years acted as the leading group within the cases with sources of infection “Community”, “Close Contact” and “Travel”. A similar comparison of counts of cases of different sources of infection within the same age group is also conducted. It reveals that there was a decreasing trend between number of cases with the source of infection "Household Contact", and the age, whereas the trend between number of cases related to “Outbreaks, Healthcare Institutions” and the age revealed an increasing trend.
+
+The paper structured as follows: Firstly, @sec-data-overview provides description of the dataset. This includes introduction of data source and data cleaning process (@sec-data-source), and explanations of variables and measurement (@sec-variable). Then, @sec-visual displays all visualizations of the data, including distribution by age groups (@sec-age), distribution by gender (@sec-gender), and distribution by sources of infection (@sec-source-infection). Then, @sec-result presents the results of data analysis. @sec-outbreak discusses how counts of COVID-19 cases were associated with outbreaks; @sec-age-same-source compares the counts of COVID-19 cases of different age groups within the same source of infection; and @sec-source-same-age compares the counts of cases of different sources of infection within the same age group. Finally, @sec-appx includes supplementary information on data cleaning process (@sec-appx-cleaning) and summarized statistics of each variable (@sec-appx-stats). References of the paper are listed at the end.
 
 
 \newpage
@@ -34,23 +45,145 @@ The remainder of this paper is structured as follows. @sec-data....
 
 # Data {#sec-data}
 
-## Overview
+## Overview {#sec-data-overview}
+
+### Data Source and Cleaning {#sec-data-source}
 
 The analysis uses the dataset of "COVID-19 Cases in Toronto" from the Open Data Toronto portal. The raw dataset contains "anonymized, person-level information for all COVID-19 cases reported from the start of the COVID-19 pandemic in January 2020", which is shared by Toronto Public Health (TPH) and lastly refreshed in February 14, 2024 [@toronto_covid].
 
 The earliest onset of symptoms of COVID-19 was confirmed to be around 1 December 2019 (by The Lancet) to 8 December 2019 (by WHO), and human-to-human transmission was confirmed by the WHO and Chinese authorities by 20 January 2020 [@wikipedia_covid19]. Therefore, year 2020 was considered as the first year of COVID-19. 
 
-Based on the background of COVID-19, the paper found it meaningful to investigate the COVID-19 cases in Toronto during the first year of the pandemic, which is year 2020. The raw data is then downloaded and cleaned before conducting analysis with tables, graphs and plots.
+Based on this background of COVID-19, the paper found it meaningful to investigate the COVID-19 cases in Toronto during the first year of the pandemic, which is year 2020. Specifically, what groups of people were more vulnerable to coronavirus (which gender, which ages stratum), and which source was most likely to cause infection. The raw data is then downloaded and cleaned before conducting analysis with tables, graphs and plots.
 
-The analyses presented in this paper were conducted using R programming language [@citeR]. The `tidyverse` [@citetidyverse] packages were used in the process of data simulation, testing beforehand. Original raw data was downloaded from the Open Data Toronto using the `opendatatoronto` [@opendatatoronto_package] packages and the `tidyverse` [@citetidyverse] packages. Then, data cleaning process was done by using the `tidyverse` package [@citetidyverse] and the `dplyr` package [@citedplyr]. Graphs and plots were made by using the `ggplot2` packages [@citeggplot].
+The analyses presented in this paper were conducted using R programming language [@citeR]. The `tidyverse` packages [@citetidyverse] were used in the process of data simulation, testing beforehand. Original raw data was downloaded from the Open Data Toronto using the `opendatatoronto` package [@opendatatoronto_package] and the `tidyverse` package [@citetidyverse]. Data cleaning process was done by using `tidyverse` package [@citetidyverse], `dplyr` package [@citedplyr] and `lubridate` package [@citelubridate]. Then, tables were made with `knitr` package [@citeknitr], and graphs were made with `ggplot2` package [@citeggplot] and `tibble` package [@citetibble].
+
+@tbl-cleaned-data shows the sample of dataset after cleaning. See @sec-appx-cleaning for detailed steps.
+
+
+```{r}
+#| label: tbl-cleaned-data
+#| tbl-cap: "Sample of Cleaned Data of COVID-19 Cases in Toronto During 2020"
+#| echo: false
+#| message: false
+#| warning: false
+
+
+cleaned_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv"))
+
+# Changing column name
+# Ref from https://bookdown.org/yihui/rmarkdown-cookbook/kable.html#change-column-names
+
+cleaned_data %>%
+  head() %>%
+  kable(format = "simple", col.names = c('Age Group', 'Source of Infection', 'Gender'))
+
+```
+
+
+One additional notes have to be made on the variables: the data cleaning process does not involve removal of all rows with missing values. Specifically, in the analysis dataset, there are still missing values in "Age Group" column (marked as NA), "Source of Infection" column (marked as "No Information") and "Gender" column (marked as "UNKNOWN"). This could be seen in the below summary tables, where there are still counts of cases which are lack of information. This is because only the rows that lack information in all three columns are removed while cleaning data. The purpose is to maintain data integrity. The trends of COVID-19 cases by age, gender and source of infection are analyzed separately before making cross analysis in the paper, and therefore every case which has value in at least one variable is kept to ensure more complete and precise analysis of pattern with strong statistical power. Removing cases with simply one or two variable values missing discards a significant portion of the dataset, which could lead to biased results.
+
+Following tables present the summarized counts of each value of different variables. These tables provide a basic overview of the data and simplifies the analysis. 
+See @sec-appx-stats for the summarized statistics of each variable. 
+
+Firstly, @tbl-age-counts shows the counts for cases of each age group.
+
+
+```{r}
+#| label: tbl-age-counts
+#| tbl-cap: "Summary of Counts for Cases of Each Age Group"
+#| echo: false
+#| message: false
+#| warning: false
+
+
+cleaned_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv"))
+
+summary_age <- cleaned_data %>%
+  group_by(age_group) %>%
+  summarise(count = n())
+
+summary_age %>% 
+  kable(format = "simple", col.names = c('Age Group', 'Number of Cases'))
+
+```
+
+
+@tbl-gender-counts shows the counts for cases of each gender classification.
+
+
+```{r}
+#| label: tbl-gender-counts
+#| tbl-cap: "Summary of Counts for Cases of Each Gender"
+#| echo: false
+#| message: false
+#| warning: false
+
+
+cleaned_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv"))
+
+summary_gender <- cleaned_data %>%
+  group_by(client_gender) %>%
+  summarise(count = n())
+
+summary_gender %>% 
+  kable(format = "simple", col.names = c('Gender', 'Number of Cases'))
+
+```
+
+
+Finally, @tbl-source-counts shows the counts for cases associated with each source of infection.
+
+
+```{r}
+#| label: tbl-source-counts
+#| tbl-cap: "Summary of Counts for Cases with Each Source of Infection"
+#| echo: false
+#| message: false
+#| warning: false
+
+
+cleaned_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv"))
+
+summary_source <- cleaned_data %>%
+  group_by(source_of_infection) %>%
+  summarise(count = n())
+
+summary_source %>% 
+  kable(format = "simple", col.names = c('Source of Infection', 'Number of Cases'))
+
+```
+
+
+### Variable and Measurement {#sec-variable}
+
+@tbl-cleaned-data shows the sample of cleaned data for the analysis. Each row represents one COVID-19 case reported in Toronto during 2020. "Age group" column refers to the patient's age at the time of illness, divided into 10-year range (19 and younger, 20-29, 30-39, 40-49, 50-59, 60-69, 70-79, 80-89, 90 and older). If unknown, it would be marked as blank (NA). "Gender" column refers to the self-reported gender of the patient, classified as male, female, non-binary, transgender, other. If unknown, it would be marked as "UNKNOWN". "Outcome" column records whether the case has been resolved or has left fatal consequences (for example, death). "Source of Infection" column identifies the most likely way that the case acquired COVID-19 infection, which includes: close contact, community, household contact, travel, outbreaks (congregate settings), outbreaks (healthcare institutions), outbreak (other settings). If unknown, it would be marked as "No Information". 
+
+To avoid ambiguity, each source of infection is defined as below [@toronto_covid]:
+
+- Close Contact: Case who acquired infection from a close contact with a confirmed or probable COVID-19 case (e.g. co-worker).
+- Community: Cases who did not travel outside of Ontario, did not identify being a close contact with a COVID-19 case, and were not part of a known confirmed COVID-19 outbreak.
+- Household Contact: Case who acquired infection from a household contact with a confirmed or probable COVID-19 case (e.g. family member, roommate).
+- Travel: Case that travelled outside of Ontario in the 14 days prior to their symptom onset or test date, whichever is the earliest.
+- Outbreaks, Congregate Settings: confirmed outbreaks in Toronto in shelters, correctional facilities, group homes, or other congregate settings such as hostels or rooming houses.
+- Outbreaks, Healthcare Institutions: confirmed outbreaks in Toronto in long-term care homes, retirement homes, hospitals, chronic care hospitals, or other institutional settings.
+- Outbreaks, Other Settings: confirmed outbreaks in Toronto in workplaces, schools, day cares, or outbreaks outside of Toronto.
+- No information: Cases with no information on the source of infection.
+
+Note that according to Toronto Public Health [@toronto_covid], the most likely way that cases acquired their COVID-19 infection is determined by examining several data fields including: (1) A public health investigator's assessment of the most likely source of infection; (2) Whether being associated with a confirmed COVID-19 outbreak; (3) Reported risk factors such as contact with a known case or travel. If the public health investigator's assessment is absent, then the other data fields are used to infer source of acquisition using the following hierarchy: Travel > Outbreak > Household Contact > Close Contact > Community > No information (Cases with episode dates before April 1 2020) or Outbreak > Household Contact > Close Contact > Travel > Community > No information (Cases with episode dates on or after April 1 2020). The measurement of other variables (age, gender) are self-reported.
+
+It could be seen that the assessment by public health investigators plays a significant role in determining the most likely source of infection. This type of subjective judgement introduced potential bias to the dataset, and could be affected by multiple aspects such as limited information. Similar ethical challenges also occurred due to the rigid hierarchy set by TPH, where the role of different sources in spreading COVID-19 would be overestimated or underestimated. This could largely influence public responses and lead to unfair legislation, policies and restrictions to vulnerable groups, negatively affect public trust to the health system of Toronto. Moreover, though the dataset was anonymized before publishing, privacy patient was always a main concern. The raw dataset published by TPH included the neighborhood name of each case, and such geographic data made it possible to track more private information of the patients, creating privacy leak issues.
 
 
 \newpage
 
 
+## Visualization {#sec-visual}
+
+### Distribution by Age Groups {#sec-age}
+
 ```{r}
-#| label: fig-planes-1
-#| fig-cap: Relationship between covid cases and age groups
+#| label: fig-age
+#| fig-cap: Distribution of COVID-19 Cases by Age Groups
 #| echo: false
 #| warning: false
 #| message: false
@@ -59,10 +192,12 @@ The analyses presented in this paper were conducted using R programming language
 analysis_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv"))
 
 analysis_data |> 
+  filter(!is.na(age_group)) |>
   ggplot(aes(x = age_group)) +
   geom_bar(stat = "count") +
   theme_minimal() +
-  theme(axis.text.x = element_text(size = 5)) +
+  #Rotating x-axis ref from: https://tellingstorieswithdata.com/05-static_communication.html#bar-charts
+  guides(x = guide_axis(angle = 45)) +
   labs(
     x = "Age Group",
     y = "Number of COVID-19 Cases"
@@ -71,12 +206,43 @@ analysis_data |>
 ```
 
 
-Talk way more about it. 
+@fig-age illustrates the distribution of COVID-19 cases in Toronto during 2020 by age groups. Among all cases, the age group with the highest number of COVID-19 cases is 20 to 29 years, with specifically 12378 counts (approximately 19.8% of all cases), followed by the age group of 30 to 39 years (16.4%) and the age group of 50 to 59 years (14.7%). Notice that there is a decreasing trend in case numbers as age increases beyond 50 years, and the age group of 90 and older has lowest proportion of cases.
+
+
+### Distribution by Gender {#sec-gender}
 
 
 ```{r}
-#| label: fig-planes-2
-#| fig-cap: Relationship between Covid cases and source of infection
+#| label: fig-gender
+#| fig-cap: Distribution of COVID-19 Cases by Gender
+#| echo: false
+#| warning: false
+#| message: false
+
+analysis_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv"))
+
+analysis_data |> 
+  filter(client_gender != "UNKNOWN") |>
+  ggplot(aes(x = client_gender)) +
+  geom_bar(stat = "count") +
+  theme_minimal() +
+  labs(
+    x = "Gender",
+    y = "Number of COVID-19 Cases"
+  )
+
+```
+
+
+@fig-gender illustrates the distribution of COVID-19 cases in Toronto during 2020 by gender. Female and male have relatively same proportion. Specifically, there are 30462 male cases and 31799 female cases. The sum of the number of non-binary, transgender and other cases is 23, which is a tiny proportion of the total number of COVID-19 cases.
+
+
+### Distribution by Sources of Infection {#sec-source-infection}
+
+
+```{r}
+#| label: fig-source-infection
+#| fig-cap: Distribution of COVID-19 Cases by Source of Infection
 #| echo: false
 #| warning: false
 #| message: false
@@ -89,7 +255,7 @@ analysis_data |>
   geom_bar(stat = "count") +
   theme_minimal() +
   theme(axis.text.x = element_text(size = 5)) +
-  guides(x = guide_axis(angle = 90)) +
+  guides(x = guide_axis(angle = 45)) +
   labs(
     x = "Source of Infection",
     y = "Number of COVID-19 Cases"
@@ -98,55 +264,127 @@ analysis_data |>
 ```
 
 
+@fig-source-infection illustrates the distribution of COVID-19 cases in Toronto during 2020 by source of infection. Among all sources of infection, household contact is the most common source, with specifically 11779 cases (29.0%). The second common source is community (9895 cases, 24.4%) and the third common source is outbreak in healthcare institutions (8724 cases, 21.5%). These three leading sources of infection have significantly higher proportion than others, and almost three-fourths of all cases were driven by them. On the other hand, the travel-related cases, with fewer than 1,000 cases, are notably less significant.
+
+
+# Result {#sec-result}
+
+## Whether Outbreak Associated {#sec-outbreak}
+
+
 ```{r}
-#| label: fig-planes-3
-#| fig-cap: Relationship between Covid cases and gender
+#| label: fig-outbreak-asso
+#| fig-cap: Counts by Whether COVID-19 cases Were Associated with Outbreaks or Not
 #| echo: false
 #| warning: false
 #| message: false
 
 analysis_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv"))
 
-analysis_data |> 
-  ggplot(aes(x = client_gender)) +
-  geom_bar(stat = "count") +
+outbreak_data <- analysis_data |>
+  filter(source_of_infection != "No Information") |>
+  mutate(
+    source_group = case_when(
+      source_of_infection %in% c("Outbreaks, Congregate Settings", 
+                                 "Outbreaks, Healthcare Institutions", 
+                                 "Outbreaks, Other Settings") ~ "YES",
+      source_of_infection %in% c("Close Contact", 
+                                 "Community", 
+                                 "Household Contact", 
+                                 "Travel") ~ "NO"
+    )
+  )
+
+outbreak_summary <- outbreak_data |>
+  group_by(source_group) |>
+  summarise(count = n())
+
+outbreak_summary |>
+  ggplot(aes(x = source_group, y = count, fill = source_group)) +
+  geom_bar(stat = "identity") +
   theme_minimal() +
-  theme(axis.text.x = element_text(size = 5)) +
-  guides(x = guide_axis(angle = 90)) +
   labs(
-    x = "Gender",
-    y = "Number of COVID-19 Cases"
+    x = "Whether Outbreak Associated",
+    y = "Number of COVID-19 Cases",
+    fill = "Outbreak Associated"
   )
 
 ```
 
 
+@fig-outbreak-asso compares the number of cases that were associated with outbreaks (i.e. had either "Outbreaks, Congregate Settings", "Outbreaks, Healthcare Institutions" or "Outbreaks, Other Settings" as their sources of infection) to the number of cases that were not. It reveals that there was a smaller proportion of cases that were associated with outbreaks (with 13205 cases, 32.5%), approximately half of the number of the ones that were not.
+
+
 ```{r}
-#| label: fig-planes-4
-#| fig-cap: Relationship between covid cases and whether outbreak associated
+#| label: fig-outbreak-detail
+#| fig-cap: Distribution of COVID-19 Cases by Outbreak Types
 #| echo: false
 #| warning: false
 #| message: false
 
 analysis_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv"))
 
-analysis_data |> 
-  ggplot(aes(x = outbreak_associated)) +
+analysis_data |>
+  filter(source_of_infection != "No Information" & source_of_infection != "Travel" & source_of_infection != "Household Contact" & source_of_infection != "Close Contact" & source_of_infection != "Community") |>
+  ggplot(aes(x = source_of_infection, fill = source_of_infection)) +
   geom_bar(stat = "count") +
   theme_minimal() +
   theme(axis.text.x = element_text(size = 5)) +
-  guides(x = guide_axis(angle = 90)) +
+  guides(x = guide_axis(angle = 45)) +
   labs(
-    x = "Whether outbreak associated",
-    y = "Number of COVID-19 Cases"
+    x = "Source of Infection",
+    y = "Number of COVID-19 Cases",
+    fill = "Outbreak Types"
   )
 
 ```
 
 
+Recall the distribution of cases by sources of infection shown in @sec-source-infection above. By selecting out the three distinct sources of infection that are associated with outbreaks, @fig-outbreak-detail demonstrates the distribution of COVID-19 cases by outbreak types. Among all outbreak-related cases (specifically 13205 cases), the outbreaks that happened in healthcare institutions, such as long-term care homes, retirement homes, and hospitals, were the most common sources of infection (8724 cases, 66.1%), exceeding half of the total. Outbreaks that happened in congregate settings such as shelters, correctional facilities, and group homes were the least common ones (1089 cases, 8.24%).
+
+
+## Different Age Groups Within the Same Source {#sec-age-same-source}
+
+
 ```{r}
-#| label: fig-planes-z
-#| fig-cap: Comparison of different age groups among the same source of infection
+#| label: fig-age-same-source-1
+#| fig-cap: Comparison of Different Age Groups Within the Same Source of Infection
+#| echo: false
+#| warning: false
+#| message: false
+
+analysis_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv"))
+
+# Side by side group bar charts:
+# Ref from: https://tellingstorieswithdata.com/05-static_communication.html#bar-charts
+
+analysis_data |> 
+  filter(source_of_infection != "No Information") |>
+  filter(!is.na(age_group)) |>
+  ggplot(mapping = aes(x = source_of_infection, fill = age_group)) +
+  geom_bar(stat = "count", position = "dodge2") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(size = 5), 
+        legend.text = element_text(size = 7)) +
+  guides(x = guide_axis(angle = 45)) +
+  labs(
+    x = "Source of Infection", 
+    y = "Number of COVID cases",
+    fill = "Age Group",
+  ) +
+  scale_fill_brewer(palette = "Set1")
+
+```
+
+
+@fig-age-same-source-1 compares the counts of cases of different age groups within the same source of infection. One of the key observations is that within all cases that had "Household Contact" as their source of infection, people aged 19 and younger had significantly high proportion (3587 cases, 30.5%). The age group of 19 and younger was also most likely to get infected by COVID-19 due to outbreaks in other settings, such as outbreaks in workplaces, schools, and day cares in Toronto. Moreover, the age group of 20 to 29 years acted as the leading group within the sources of infection of "Community", "Close Contact" and "Travel". The source of infection "Outbreaks, Health Institutions" had age groups of 80 to 89 years to be the primary group, followed by the age group of 90 and older.
+
+@fig-age-same-source-2 shows a clearer comparison by plotting separate bar plot for each source of infection vertically.
+
+
+```{r fig.height=20, fig.width=15}
+#| label: fig-age-same-source-2
+#| fig-cap: Comparison of Different Age Groups Within the Same Source of Infection
 #| echo: false
 #| warning: false
 #| message: false
@@ -155,16 +393,25 @@ analysis_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv
 
 analysis_data |> 
   filter(source_of_infection != "No Information") |>
-  ggplot(aes(x = source_of_infection, group = age_group, fill = age_group)) +
-  geom_bar(stat = "count", position = "dodge2") +
+  filter(!is.na(age_group)) |>
+  ggplot(aes(x = age_group, fill = age_group)) +
+  geom_bar(stat = "count") +
   theme_minimal() +
-  theme(axis.text.x = element_text(size = 5)) +
-  labs(
-    x = "Source of Infection", y = "Number of COVID cases",
-    fill = "Age Group",
-    caption = "Data source: Open Toronto Data."
+  theme(
+    axis.text.y = element_text(size = 10), # Size of y-axis test
+    axis.title.x = element_text(size = 20), # Size of x-axis title
+    axis.title.y = element_text(size = 20), # Size of y-axis title
+    strip.text = element_text(size = 20), # Size of facet titles
+    legend.text = element_text(size = 13), # Size of legend text
+    legend.title = element_text(size = 20) # Size of legend title
   ) +
-  guides(x = guide_axis(angle = 90)) +
+  facet_wrap(~source_of_infection, ncol = 1) +
+  coord_flip() +
+  labs(
+    x = "Source of Infection",
+    y = "Number of COVID-19 Cases",
+    fill = "Age Group"
+  ) +
   scale_fill_brewer(palette = "Set1")
 
 ```
@@ -173,9 +420,50 @@ analysis_data |>
 \newpage
 
 
+## Different Sources Within the Same Age Group {#sec-source-same-age}
+
+
+```{r}
+#| label: fig-source-same-age-1
+#| fig-cap: Comparison of Different Sources of Infection Within the Same Age Group
+#| echo: false
+#| warning: false
+#| message: false
+
+analysis_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv"))
+
+# Side by side group bar charts:
+# Ref from: https://tellingstorieswithdata.com/05-static_communication.html#bar-charts
+
+analysis_data |> 
+  filter(source_of_infection != "No Information") |>
+  filter(!is.na(age_group)) |>
+  ggplot(mapping = aes(x = age_group, fill = source_of_infection)) +
+  geom_bar(stat = "count", position = "dodge2") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(size = 5), 
+        legend.text = element_text(size = 7)) +
+  guides(x = guide_axis(angle = 45)) +
+  labs(
+    x = "Age Group", 
+    y = "Number of COVID cases",
+    fill = "Source of Infection",
+  ) +
+  scale_fill_brewer(palette = "Set1")
+
+```
+
+
+@fig-source-same-age-1 compares the counts of cases of different sources of infections within the same source of infection. One of the key observations include that the source "Household Contact" dominates across a majority of age groups, mainly the younger ones. For age group of 19 and younger, the proportion of cases related to the source is significantly high (3587 cases, 47.1%). There is a downward trend between such proportion and the age, as the decreasing length in the green bar in @fig-source-same-age-1 indicates that as the age becomes higher, the proportion of "Household Contact" as the source of infection becomes lower. Similar decreasing trend is discovered between the proportion of "Close Contact" cases and the age, and between the proportion of "Community" cases and the age, especially for people between 20 to 80.
+
+On the other hand, the trend between proportion of cases related to "Outbreaks, Healthcare Institutions" and the age reveals an upward trend in the graph. Starting from the age group of 19 and younger, the length of orange bar increases as the age is higher. For people over 80, the source dominates (with 2181 cases, 68.6% for 80-89 age group and 1828 cases, 86.6% for 90 and older age group).
+
+@fig-source-same-age-2 shows a clearer comparison by plotting separate bar plot for each source of infection vertically.
+
+
 ```{r fig.height=20, fig.width=15}
-#| label: fig-planes-z-1
-#| fig-cap: Comparison of different age groups among the same source of infection
+#| label: fig-source-same-age-2
+#| fig-cap: Comparison of Different Sources of Infection Within the Same Age Group
 #| echo: false
 #| warning: false
 #| message: false
@@ -184,23 +472,26 @@ analysis_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv
 
 analysis_data |> 
   filter(source_of_infection != "No Information") |>
+  filter(!is.na(age_group)) |>
   ggplot(aes(x = source_of_infection, fill = source_of_infection)) +
   geom_bar(stat = "count") +
   theme_minimal() +
   theme(
-    axis.text.y = element_text(size = 6),  
-    plot.title = element_text(size = 100, face = "bold"),
-    axis.title.x = element_text(size = 12),  
-    axis.title.y = element_text(size = 15),
-    strip.text = element_text(size = 20)
+    axis.text.y = element_text(size = 10),  
+    axis.title.x = element_text(size = 20),  
+    axis.title.y = element_text(size = 20),
+    strip.text = element_text(size = 20),
+    legend.text = element_text(size = 13), # Size of facet titles
+    legend.title = element_text(size = 20)
   ) +
   facet_wrap(~age_group, ncol = 1) +
   coord_flip() +
   labs(
     x = "Source of Infection",
     y = "Number of COVID-19 Cases",
-    caption = "Data source: Open Toronto Data."
-  )
+    fill = "Source of Infection"
+  ) +
+  scale_fill_brewer(palette = "Set1")
 
 ```
 
@@ -211,38 +502,120 @@ analysis_data |>
 
 
 \appendix
-\renewcommand{\thesection}{A.\arabic{section}}
 
 
-# Appendix {-}
+# Appendix {#sec-appx}
 
-
-# Dataset and Graph Sketches
-
-Target cleaned dataset and processed graphs are available in the Github Repository. See "other/sketches".
-
-
-# Data Cleaning
+## Data Cleaning {#sec-appx-cleaning}
 
 The data cleaning process involves the following steps to ensure the integrity and usability of the dataset:
 
-1. Modification of Column Names: The column names are standardized by `janitor::clean_names()` function. The column names are converted into lower cases, and the spaces between words are replaced with underscores, thereby enhancing readability and consistency across the dataset.
+1. Modification of Column Names: The column names are standardized. Specifically, the column names are converted into lower cases, and the spaces between words are replaced with underscores, thereby enhancing readability and consistency across the dataset.
 
-2. Separation of Date Columns: The "reported_date" column, originally formatted as "YYYY/MM/DD," is separated into three new columns: "reported_year", "reported_month" and "reported day". The same cleaning process is done to the "episode_date" column. This step improved readability and simplicity for data processing by allowing for more straightforward presentation of temporal variables.
+2. Separation of Date Columns: The "reported_date" column, originally formatted as "YYYY/MM/DD," is separated into three new columns: "reported_year", "reported_month" and "reported day". This step improved readability and simplicity for data processing by allowing for more straightforward presentation of temporal variables.
 
 3. Removal of Probable Cases: Any rows where the "classification" column is marked as "probable" are excluded from the cleaned dataset. This step removes any cases that are categorized as probable COVID-19 cases according to standard criteria, thereby enhancing the precision and reliability of analysis by focusing on confirmed cases.
 
-4. Exclusion of Incomplete Age Data: Any rows containing the column "age_group“ equals "NA" is removed. This step ensures that the data analysis is not compromised by incomplete information.
+4. Selection of Required Variables: The data analysis conducted in the paper only focuses on the COVID-19 cases in 2020, and examines 3 key variables: age group, gender and source of infection. The cleaning process removes all irrelevant rows and columns, improving the clarity of the cleaned dataset used for analysis.
+
+5. Exclusion of Incomplete Data: As mentioned in @sec-variable, the data cleaning process does not involve removal of all rows with missing values. Instead, only the rows that lack information in all three of the key variables (age group, gender, and source of infection) are removed. The purpose is to maintain data integrity and to minimize the potential biases appeared in results. 
+
+6. Standardization of Values in the Gender Column: After reviewing the dataset cleaned by the previous five steps, it is identified that one entry in the "gender" column writes "TRANS WOMAN". To avoid redundancy and simplify the subsequent analysis and plots, this value is recategorized under "TRANSGENDER", so that the "gender" column includes only 5 distinct categories with no overlap or ambiguity in definitions.
 
 
-# Additional data details
+## Summarized Statistics for Each Variable {#sec-appx-stats}
 
+
+Following tables show the summarized statistics for counts of each variable. @tbl-age-stats is for "Age Group", @tbl-gender-stats is for "Gender", and @tbl-source-stats is for "Source of Infection".
+
+
+```{r}
+#| label: tbl-age-stats
+#| tbl-cap: "Summarized statistics for Counts of Cases of Each Age Group"
+#| echo: false
+#| message: false
+#| warning: false
+
+
+cleaned_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv"))
+
+summary_age <- cleaned_data %>%
+  group_by(age_group) %>%
+  summarise(count = n())
+
+age_stats <- summary_age %>%
+  summarise(
+    Mean_Age = mean(count),
+    Median_Age = median(count),
+    Min_Age = min(count),
+    Max_Age = max(count),
+    sd_Age = sd(count)
+  )
+
+age_stats %>% kable()
+
+```
+
+
+```{r}
+#| label: tbl-gender-stats
+#| tbl-cap: "Summarized statistics for Counts of Cases of Each Gender"
+#| echo: false
+#| message: false
+#| warning: false
+
+
+cleaned_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv"))
+
+summary_gender <- cleaned_data %>%
+  group_by(client_gender) %>%
+  summarise(count = n())
+
+gender_stats <- summary_gender %>%
+  summarise(
+    Mean_Gender = mean(count),
+    Median_Gender = median(count),
+    Min_Gender = min(count),
+    Max_Gender = max(count),
+    sd_Gender = sd(count)
+  )
+
+gender_stats %>% kable()
+
+```
+
+
+```{r}
+#| label: tbl-source-stats
+#| tbl-cap: "Summarized Statistics for Cases with Each Source of Infection"
+#| echo: false
+#| message: false
+#| warning: false
+
+
+cleaned_data <- read_csv(here::here("data/analysis_data/covid_analysis_data.csv"))
+
+summary_source <- cleaned_data %>%
+  group_by(source_of_infection) %>%
+  summarise(count = n())
+
+source_stats <- summary_source %>%
+  summarise(
+    Mean_Source = mean(count),
+    Median_Source = median(count),
+    Min_Source = min(count),
+    Max_Source = max(count),
+    sd_Source = sd(count)
+  )
+
+source_stats %>% kable()
+
+```
 
 
 \newpage
 
 
-
-# References
+# References 
 
 
